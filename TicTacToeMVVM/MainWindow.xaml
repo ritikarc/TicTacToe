@@ -1,0 +1,82 @@
+﻿<Window x:Class="TicTacToeMVVM.TicTacToe"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TicTacToeMVVM"
+        mc:Ignorable="d"
+        Title="TicTacToe" Height="350" Width="525">
+
+    <Window.Resources>
+        <local:CellValuetoStringConverter x:Key="CellValuetoStringConverter" />
+        <local:CellValuetoEnabledConverter x:Key="CellValuetoEnabledConverter" />
+
+        <DataTemplate x:Key="CellTemplate">
+            <Button Command="{Binding Turn}" IsEnabled="{Binding Content, Converter={StaticResource CellValuetoEnabledConverter}}" BorderBrush="LightSeaGreen" BorderThickness="2" Background="FloralWhite" Content="{Binding Value, Converter={StaticResource CellValuetoStringConverter}}">
+            </Button>
+        </DataTemplate>
+
+        <!--<local: XColorConverter x:Key = "XColor" NoTurnColor = "White" TurnColor ="Aquamarine" />
+        <local: OColorConverter x:Key= "OColor" NoTurnColor ="White" TurnColor ="Aquamarine" />-->
+   
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Rows -->
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+
+        <Grid.ColumnDefinitions>
+            <!-- Columns -->
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <!-- Buttons -->
+
+        <!--<Button Background="Honeydew" Name="topLeft" Width="80" Height="60" Grid.Column="0" Command="{Binding Turn}" CommandParameter="0" />-->
+        <!--<Style>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="true">
+                    <Setter ""
+                </Trigger>
+            </Style.Triggers>
+            </Style>
+         </Button>-->
+        <!--<Button Background="Honeydew" Name="topMid" Width="80" Height="60" Grid.Column="1" Command="{Binding Turn}" CommandParameter="1"/>
+        <Button Background="Honeydew" Name="topRight" Width="80" Height="60" Grid.Column="2" Command="{Binding Turn}" CommandParameter="2"/>
+
+        <Button Background="Honeydew" Name="midLeft" Width="80" Height="60" Grid.Column="0" Grid.Row="1" Command="{Binding Turn}" CommandParameter="3"/>
+        <Button Background="Honeydew" Name="midMid" Width="80" Height="60" Grid.Column="1" Grid.Row="1" Command="{Binding Turn}" CommandParameter="4"/>
+        <Button Background="Honeydew" Name="midRight" Width="80" Height="60" Grid.Column="2" Grid.Row="1" Command="{Binding Turn}" CommandParameter="5"/>
+
+        <Button Background="Honeydew" Name="bottomLeft" Width="80" Height="60" Grid.Column="0" Grid.Row="2" Command="{Binding Turn}" CommandParameter="6"/>
+        <Button Background="Honeydew" Name="bottomMid" Width="80" Height="60" Grid.Column="1" Grid.Row="2" Command="{Binding Turn}" CommandParameter="7"/>
+        <Button Background="Honeydew" Name="bottomRight" Width="80" Height="60" Grid.Column="2" Grid.Row="2" Command="{Binding Turn}" CommandParameter="8"/>-->
+
+
+
+        <!-- DONE Button and Turn Indicators -->
+        <TextBlock Background="MediumSeaGreen" Width = "auto" Height="30" Grid.Column="1" Grid.Row="3" Text ="TICTACTOE" FontFamily="Times" FontWeight="ExtraBold" FontSize="25" Foreground="White" TextAlignment="Center"/>
+        <TextBlock Name="Cross" Width="auto" Height="auto" Grid.Column="0" Grid.Row="3" Text="X's" FontSize="54" TextAlignment="Center" FontFamily="Garamond" FontStyle="Oblique" FontWeight="Black"/>
+        <TextBlock Name="Zeroes" Width="auto" Height="auto" Grid.Column="2" Grid.Row="3" Text="O's" FontSize="54" TextAlignment="Center" FontFamily="Garamond" FontStyle="Oblique" FontWeight="Black"/>
+
+        <Border Grid.Row="0" Margin="10, 3,10, 3" Grid.ColumnSpan="3" Grid.RowSpan="3" BorderBrush="DarkGoldenrod" BorderThickness=" 5">
+            <ItemsControl x:Name="Cells" ItemsSource="{Binding Path=ViewBoard}" ItemTemplate ="{DynamicResource CellTemplate}" Margin="0,-1,0,1">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns ="3" Rows ="3" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </Border>
+    </Grid>
+
+</Window>
