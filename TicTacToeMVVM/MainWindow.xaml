@@ -1,4 +1,5 @@
 ﻿<Window x:Class="TicTacToeMVVM.TicTacToe"
+        x:Name="TicTacToeWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,7 +13,7 @@
         <local:CellValuetoEnabledConverter x:Key="CellValuetoEnabledConverter" />
 
         <DataTemplate x:Key="CellTemplate">
-            <Button Command="{Binding Turn}" IsEnabled="{Binding Content, Converter={StaticResource CellValuetoEnabledConverter}}" BorderBrush="LightSeaGreen" BorderThickness="2" Background="FloralWhite" Content="{Binding Value, Converter={StaticResource CellValuetoStringConverter}}">
+            <Button Command="{Binding Path=DataContext.Turn, ElementName=TicTacToeWindow}" CommandParameter="{Binding}" IsEnabled="{Binding Content, Converter={StaticResource CellValuetoEnabledConverter}}" BorderBrush="LightSeaGreen" BorderThickness="2" Background="FloralWhite" Content="{Binding Value, Converter={StaticResource CellValuetoStringConverter}}">
             </Button>
         </DataTemplate>
 

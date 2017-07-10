@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Globalization;
 using TicTacToeMVVM.Resources;
+using System.Collections.ObjectModel;
 
 namespace TicTacToeMVVM
 {
@@ -18,8 +19,7 @@ namespace TicTacToeMVVM
 
         public TurnCommand Turn { get; set; }
 
-
-        public Cell[] ViewBoard
+        public ObservableCollection<Cell> ViewBoard
         {
             get
             {
@@ -38,7 +38,7 @@ namespace TicTacToeMVVM
 
             Mainboard = new Board();
             int TurnLim = this.Mainboard.Turn;
-            this.Turn = new TurnCommand((i => this.Process(i)));
+            this.Turn = new TurnCommand(this.process);
 
 
         }
@@ -78,16 +78,22 @@ namespace TicTacToeMVVM
         /// Basically the main method.
         /// </summary>
         /// <param name="i">The parameter value (0 to 8)</param>
-        private void Process(int i)
+        private void process(object obj)
         {
-            int col = i % 3;
-            int row = (i - col) / 3;
 
-            if (Mainboard.ProcessTurn(row, col) == 1)
+            //int col = i % 3;
+            //int row = (i - col) / 3;
+
+            Cell cell = obj as Cell;
+            //cell.indexOf?
+
+            int index = ViewBoard.IndexOf(cell);
+
+            if (Mainboard.ProcessTurn(index) == 1)
             {
                 win();
             }
-            else if (Mainboard.ProcessTurn(row, col) == 0)
+            else if (Mainboard.ProcessTurn(index) == 0)
             {
                 //disable the button
             }
@@ -102,17 +108,17 @@ namespace TicTacToeMVVM
 
     public class TurnCommand : ICommand
     {
-        private Action<int> action;
+        private Action<object> action;
 
         bool canExec;
-        public TurnCommand(Action<int> act, bool exec)
+        public TurnCommand(Action<object> act, bool exec)
         {
             action = act;
             canExec = exec;
 
         }
 
-        public TurnCommand(Action<int> act)
+        public TurnCommand(Action<object> act)
         {
             action = act;
         }
@@ -126,14 +132,12 @@ namespace TicTacToeMVVM
 
         public bool CanExecute(object param)
         {
-            return param != null;
+            return true;
         }
 
         public void Execute(object parameter)
         {
-            int.TryParse((string)parameter, out int i);
-
-            action(i);
+            action(parameter);
 
         }
     }
