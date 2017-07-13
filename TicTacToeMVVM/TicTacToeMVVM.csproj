@@ -56,12 +56,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\CellValuetoEnabledConverter.cs" />
+    <Compile Include="Converters\DrawConverter.cs" />
+    <Compile Include="Converters\XWinConverter.cs" />
     <Compile Include="I Classes\BindingBase.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="CellValue.cs" />
     <Compile Include="Converters\CellValuetoStringConverter.cs" />
     <Compile Include="I Classes\RelayCommand.cs" />
+    <Compile Include="TurnCommand.cs" />
     <Compile Include="ViewModel.cs" />
+    <Compile Include="Converters\YWinConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -95,6 +99,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -108,6 +113,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\horizontal.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

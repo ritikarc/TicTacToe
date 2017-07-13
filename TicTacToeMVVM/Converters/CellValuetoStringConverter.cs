@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace TicTacToeMVVM
 {
-    class CellValuetoStringConverter : IValueConverter
+    internal class CellValuetoStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

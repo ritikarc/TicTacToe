@@ -11,15 +11,13 @@
     <Window.Resources>
         <local:CellValuetoStringConverter x:Key="CellValuetoStringConverter" />
         <local:CellValuetoEnabledConverter x:Key="CellValuetoEnabledConverter" />
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
 
         <DataTemplate x:Key="CellTemplate">
-            <Button Command="{Binding Path=DataContext.Turn, ElementName=TicTacToeWindow}" CommandParameter="{Binding}" IsEnabled="{Binding Content, Converter={StaticResource CellValuetoEnabledConverter}}" BorderBrush="LightSeaGreen" BorderThickness="2" Background="FloralWhite" Content="{Binding Value, Converter={StaticResource CellValuetoStringConverter}}">
+            <Button FontSize="40" FontFamily="Cambria" Foreground="Red" Command="{Binding Path=DataContext.Turn, ElementName=TicTacToeWindow}" CommandParameter="{Binding}" BorderBrush="LightSeaGreen" BorderThickness="2" Background="FloralWhite" Content="{Binding Value, Converter={StaticResource CellValuetoStringConverter}}">
             </Button>
         </DataTemplate>
 
-        <!--<local: XColorConverter x:Key = "XColor" NoTurnColor = "White" TurnColor ="Aquamarine" />
-        <local: OColorConverter x:Key= "OColor" NoTurnColor ="White" TurnColor ="Aquamarine" />-->
-   
     </Window.Resources>
 
     <Grid>
@@ -40,34 +38,12 @@
         </Grid.ColumnDefinitions>
 
 
-        <!-- Buttons -->
-
-        <!--<Button Background="Honeydew" Name="topLeft" Width="80" Height="60" Grid.Column="0" Command="{Binding Turn}" CommandParameter="0" />-->
-        <!--<Style>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="true">
-                    <Setter ""
-                </Trigger>
-            </Style.Triggers>
-            </Style>
-         </Button>-->
-        <!--<Button Background="Honeydew" Name="topMid" Width="80" Height="60" Grid.Column="1" Command="{Binding Turn}" CommandParameter="1"/>
-        <Button Background="Honeydew" Name="topRight" Width="80" Height="60" Grid.Column="2" Command="{Binding Turn}" CommandParameter="2"/>
-
-        <Button Background="Honeydew" Name="midLeft" Width="80" Height="60" Grid.Column="0" Grid.Row="1" Command="{Binding Turn}" CommandParameter="3"/>
-        <Button Background="Honeydew" Name="midMid" Width="80" Height="60" Grid.Column="1" Grid.Row="1" Command="{Binding Turn}" CommandParameter="4"/>
-        <Button Background="Honeydew" Name="midRight" Width="80" Height="60" Grid.Column="2" Grid.Row="1" Command="{Binding Turn}" CommandParameter="5"/>
-
-        <Button Background="Honeydew" Name="bottomLeft" Width="80" Height="60" Grid.Column="0" Grid.Row="2" Command="{Binding Turn}" CommandParameter="6"/>
-        <Button Background="Honeydew" Name="bottomMid" Width="80" Height="60" Grid.Column="1" Grid.Row="2" Command="{Binding Turn}" CommandParameter="7"/>
-        <Button Background="Honeydew" Name="bottomRight" Width="80" Height="60" Grid.Column="2" Grid.Row="2" Command="{Binding Turn}" CommandParameter="8"/>-->
-
-
 
         <!-- DONE Button and Turn Indicators -->
         <TextBlock Background="MediumSeaGreen" Width = "auto" Height="30" Grid.Column="1" Grid.Row="3" Text ="TICTACTOE" FontFamily="Times" FontWeight="ExtraBold" FontSize="25" Foreground="White" TextAlignment="Center"/>
-        <TextBlock Name="Cross" Width="auto" Height="auto" Grid.Column="0" Grid.Row="3" Text="X's" FontSize="54" TextAlignment="Center" FontFamily="Garamond" FontStyle="Oblique" FontWeight="Black"/>
-        <TextBlock Name="Zeroes" Width="auto" Height="auto" Grid.Column="2" Grid.Row="3" Text="O's" FontSize="54" TextAlignment="Center" FontFamily="Garamond" FontStyle="Oblique" FontWeight="Black"/>
+        <Button Name="Cross" Width="120" Height="70" Grid.Column="0" Grid.Row="3" Content="X's" FontSize="54" HorizontalAlignment="Center" FontFamily="Garamond" FontStyle="Oblique" FontWeight="Black" IsEnabled="{Binding IsXTurn}" Background="Honeydew"/>
+        <Button Name="Zeroes" Width="120" Height="70" Grid.Column="2" Grid.Row="3" Content="O's" FontSize="54" HorizontalAlignment="Center" FontFamily="Garamond" FontStyle="Oblique" FontWeight="Black" IsEnabled="{Binding IsYTurn}" Background="Honeydew"/>
+
 
         <Border Grid.Row="0" Margin="10, 3,10, 3" Grid.ColumnSpan="3" Grid.RowSpan="3" BorderBrush="DarkGoldenrod" BorderThickness=" 5">
             <ItemsControl x:Name="Cells" ItemsSource="{Binding Path=ViewBoard}" ItemTemplate ="{DynamicResource CellTemplate}" Margin="0,-1,0,1">
@@ -78,6 +54,10 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
         </Border>
+
+        <TextBlock Background="#fafce8" TextWrapping="Wrap" Grid.Column="1" Grid.Row="1" Visibility="{Binding IsMessageVisible, Converter={StaticResource VisibilityConverter}}" Text="{Binding WinMessage}" FontFamily="Britannic Bold" FontSize="38" TextAlignment="Center" Foreground="#ab0761"/>
+
+
     </Grid>
 
 </Window>

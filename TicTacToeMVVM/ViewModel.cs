@@ -1,23 +1,72 @@
-﻿using System;
-using System.Windows.Input;
-using System.ComponentModel;
-using System.Runtime.Remoting.Messaging;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Globalization;
-using TicTacToeMVVM.Resources;
-using System.Collections.ObjectModel;
-
-namespace TicTacToeMVVM
+﻿namespace TicTacToeMVVM
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Windows.Input;
+    using TicTacToeMVVM.Resources;
+
     /// <summary>
     /// The ViewModel (lol)
     /// </summary>
-    class ViewModel : BindingBase
+    internal class ViewModel : BindingBase
     {
+        private bool isMessageVisible;
+        private string winMessage;
+        private bool isGameOver;
+        private bool isXTurn;
+        private bool isYTurn;
+
+        public ViewModel()
+        {
+            this.isYTurn = false;
+            this.isXTurn = true;
+            this.Mainboard = new Board();
+            this.Turn = new TurnCommand(this.Process, this.CanProcess);
+            this.isMessageVisible = false;
+
+        }
 
         public TurnCommand Turn { get; set; }
+
+        public bool IsXTurn
+        {
+            get
+            {
+                return this.isXTurn;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.isXTurn, value);
+            }
+        }
+
+        public bool IsYTurn
+        {
+            get
+            {
+                return this.isYTurn;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.isYTurn, value);
+            }
+        }
+
+        public bool IsGameOver
+        {
+            get
+            {
+                return this.isGameOver;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.isGameOver, value);
+            }
+        }
+
 
         public ObservableCollection<Cell> ViewBoard
         {
@@ -27,149 +76,116 @@ namespace TicTacToeMVVM
             }
         }
 
+        public bool IsMessageVisible
+        {
+            get
+            {
+                return this.isMessageVisible;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.isMessageVisible, value);
+            }
+        }
+
+        public string WinMessage
+        {
+            get
+            {
+                return this.winMessage;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.winMessage, value);
+            }
+        }
+
         private Board Mainboard
         {
             get; set;
         }
-        //public int XOXO = Mainboard.XOXO();
 
-        public ViewModel()
+        public void DrawCondition()
         {
-
-            Mainboard = new Board();
-            int TurnLim = this.Mainboard.Turn;
-            this.Turn = new TurnCommand(this.process);
-
-
+            this.IsGameOver = true;
+            this.ShowEndCondition("It's a draw!");
         }
 
-        //Temporary
-        private bool canProcess()
+        public void Win()
         {
-            return true;
+            this.IsGameOver = true;
+
+            if ((this.Mainboard.Turn % 2) == 1)
+            {
+                this.ShowEndCondition("X Wins!");
+            }
+            else
+            {
+                this.ShowEndCondition("O Wins!");
+            }
         }
 
-        public void drawCondition()
+        public void ShowEndCondition(string message)
         {
-            disableAll();
-            //disable all the boxes
-            //show MessageBox saying the game is a draw
-        }
-
-        public void win()
-        {
-            //disableAll();
-            //if (XOXO == 1)
-            //{
-            //    //show X Wins messagebox
-            //    
-            //} else
-            //{
-            //    //show O Wins messagebox
-            //}
-        }
-
-        public void disableAll()
-        {
-            //disable all boxes
+            this.WinMessage = message;
+            this.IsMessageVisible = true;
         }
 
         /// <summary>
         /// Basically the main method.
         /// </summary>
-        /// <param name="i">The parameter value (0 to 8)</param>
-        private void process(object obj)
+        /// <param name="obj">The parameter value (0 to 8)</param>
+        private void Process(object obj)
         {
-
-            //int col = i % 3;
-            //int row = (i - col) / 3;
-
             Cell cell = obj as Cell;
-            //cell.indexOf?
 
-            int index = ViewBoard.IndexOf(cell);
+            int index = this.ViewBoard.IndexOf(cell);
+            int processturnvalue = this.Mainboard.ProcessTurn(index);
 
-            if (Mainboard.ProcessTurn(index) == 1)
+            if (processturnvalue == 1)
             {
-                win();
+                this.Win();
             }
-            else if (Mainboard.ProcessTurn(index) == 0)
+            else if (processturnvalue == 0)
             {
-                //disable the button
+                if (this.Mainboard.Turn % 2 == 1)
+                {
+                    this.IsXTurn = true;
+                    this.IsYTurn = false;
+                } else
+                {
+                    this.IsXTurn = false;
+                    this.IsYTurn = true;
+                }
             }
             else
             {
-                drawCondition();
+                this.DrawCondition(); 
+            }
+        }
+
+        private bool CanProcess(object obj)
+        { 
+            Cell cell = obj as Cell;
+            if (cell == null)
+            {
+                return false;
             }
 
-        }
-
-    }
-
-    public class TurnCommand : ICommand
-    {
-        private Action<object> action;
-
-        bool canExec;
-        public TurnCommand(Action<object> act, bool exec)
-        {
-            action = act;
-            canExec = exec;
-
-        }
-
-        public TurnCommand(Action<object> act)
-        {
-            action = act;
-        }
-
-
-        public event EventHandler CanExecuteChanged;
-        //{
-        //    add { this.CanExecuteChanged += value; }
-        //    remove { this.CanExecuteChanged -= value; }
-        //}
-
-        public bool CanExecute(object param)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            action(parameter);
-
+            if (cell.Value == CellValue.X)
+            {
+                return false;
+            }
+            else if (cell.Value == CellValue.O)
+            {
+                return false;
+            }
+            else
+            {
+                return !this.IsGameOver;
+            }
         }
     }
-
-    /// <summary>
-    /// An attempt to make the X and O on the board change colors.
-    /// </summary>
-    //public class XColorConverter : IValueConverter
-    //{
-    //    public Color NoTurnColor
-    //    {
-    //        get; set;
-    //    }
-    //    public Color TurnColor
-    //    {
-    //        get; set;
-    //    }
-
-    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        if ((int)value % 2 == 1)
-    //        {
-    //            return TurnColor;
-    //        }
-    //        else
-    //        {
-    //            return NoTurnColor;
-    //        }
-    //    }
-    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
 }
