@@ -10,7 +10,6 @@
 
     <Window.Resources>
         <local:CellValuetoStringConverter x:Key="CellValuetoStringConverter" />
-        <local:CellValuetoEnabledConverter x:Key="CellValuetoEnabledConverter" />
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
 
         <DataTemplate x:Key="CellTemplate">

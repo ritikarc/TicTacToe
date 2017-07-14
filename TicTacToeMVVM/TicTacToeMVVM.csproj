@@ -55,9 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\CellValuetoEnabledConverter.cs" />
-    <Compile Include="Converters\DrawConverter.cs" />
-    <Compile Include="Converters\XWinConverter.cs" />
     <Compile Include="I Classes\BindingBase.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="CellValue.cs" />
@@ -65,7 +62,6 @@
     <Compile Include="I Classes\RelayCommand.cs" />
     <Compile Include="TurnCommand.cs" />
     <Compile Include="ViewModel.cs" />
-    <Compile Include="Converters\YWinConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
